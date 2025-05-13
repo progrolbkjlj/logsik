@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Logi serwera GrabMC</title>
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: #00ff00;
+      font-family: monospace;
+      padding: 20px;
+    }
+    #logi {
+      white-space: pre-wrap;
+      border: 1px solid #333;
+      background-color: #000;
+      padding: 15px;
+      max-height: 80vh;
+      overflow-y: scroll;
+    }
+  </style>
+</head>
+<body>
+  <h1>Logi serwera GrabMC</h1>
+  <div id="logi">Ładowanie logów...</div>
+
+  <script>
+    const gracze = ["xVipek", "TNTMaster", "Noobek1337", "ProKox", "Ziom3k", "xDShadow", "MrPanda", "Klocu", "EnderPL", "AdminGruby"];
+    const akcje = [
+      (nick) => [INFO]: Gracz ${nick} dołączył do gry.,
+      (nick) => [INFO]: Gracz ${nick} opuścił grę.,
+      (nick) => [WARN]: TPS spadł poniżej ${Math.floor(Math.random() * 5) + 15}!,
+      (nick) => [INFO]: ${nick} wykonał komendę /home,
+      (nick) => [INFO]: ${nick} otworzył skrzynię w koordynatach X:${Math.floor(Math.random()*100)} Z:${Math.floor(Math.random()*100)}.,
+      (nick) => [INFO]: ${nick} otrzymał bana na 7 dni (powód: cheaty).,
+      (nick) => [ERROR]: Plugin "AntiCheat" wykrył nieregularny ruch gracza ${nick}.,
+      (nick) => [INFO]: Wykonano zapis świata przez ${nick}.,
+      (nick) => [INFO]: ${nick} został wyrzucony z serwera (AFK).,
+      (nick) => [INFO]: ${nick} zginął: Spadł z dużej wysokości.,
+      (nick) => [INFO]: ${nick} zbanował gracza ${gracze[Math.floor(Math.random() * gracze.length)]}.,
+      (nick) => [ERROR]: Nie udało się załadować pluginu "WorldEdit".,
+      (nick) => [INFO]: ${nick} wszedł do Netheru.,
+      (nick) => [INFO]: ${nick} zdobył osiągnięcie "Diamenty!",
+    ];
+
+    const logBox = document.getElementById("logi");
+
+    function generujLog() {
+      const nick = gracze[Math.floor(Math.random() * gracze.length)];
+      const akcja = akcje[Math.floor(Math.random() * akcje.length)];
+      const czas = new Date().toTimeString().split(" ")[0];
+      return [${czas}] ${akcja(nick)};
+    }
+
+    let logi = [];
+    const maxLogow = 100;
+
+    function dodajLog() {
+      const nowyLog = generujLog();
+      logi.push(nowyLog);
+      if (logi.length > maxLogow) logi.shift(); // usuń najstarszy log
+      logBox.textContent = logi.join("\n");
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    logBox.textContent = "";
+    setInterval(dodajLog, 1000);
+  </script>
+</body>
+</html
